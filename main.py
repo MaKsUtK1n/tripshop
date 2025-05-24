@@ -501,8 +501,10 @@ def catalogs_handler(call: CallbackQuery):
 def start_handler(message: Message):
     data = get_data(message.from_user.id)
     if not data[5]:
-        return bot.send_message(message.chat.id, """<b>🎩 Для начала пользования бота вам необходимо ознакомиться с пользовательским соглашением:
-кнопки</b>""", reply_markup=user_agreement_kb())
+        if type(message) is Message:
+            return bot.send_message(message.chat.id, "<b>🎩 Для начала пользования бота вам необходимо ознакомиться с пользовательским соглашением</b>", reply_markup=user_agreement_kb())
+        else:
+            return bot.edit_message_text("<b>🎩 Для начала пользования бота вам необходимо ознакомиться с пользовательским соглашением</b>", message.message.chat.id, message.message.id, reply_markup=user_agreement_kb())
     try:
         ref = int(message.text.replace("/start ", ""))
         with con:
@@ -514,7 +516,7 @@ def start_handler(message: Message):
     except:
         ...
     if type(message) is Message:
-        bot.send_sticker(message.chat.id, "CAACAgEAAxkBAAEOhZloKyyJcJTZUxqQ6s1UqheNX27BewACGwMAArAHGESRLvZwzZJ9sjYE")
+        bot.send_sticker(message.chat.id, "CAACAgIAAxkBAAEOjsBoMY0wxnQpnJ-L5wEt9WyEllttqQACeAEAAntOKhC0XBJ4uS6fXTYE")
         bot.send_message(message.chat.id, """<b>🚀 Добро пожаловать в Trip Shop!
 
 📌 Вы попали в <u>лучший</u> цифровой магазин, ведь на данный момент мы являемся <u>лидером</u> среди конкурентов. У нас самые низкие цены, отзывчивая техническая поддержка, качественные товары, актуальность и многое другое.</b>""", reply_markup=start_kb())
